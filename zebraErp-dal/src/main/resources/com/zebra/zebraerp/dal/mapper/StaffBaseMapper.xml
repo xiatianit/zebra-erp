@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.StaffBaseMapper">
+    <resultMap id="BaseResultMap" type="com.zebra.zebraerp.dal.dataobject.StaffBaseDO">
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="staff_name" property="staffName" jdbcType="VARCHAR"/>
+        <result column="id_card_no" property="idCardNo" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="staff_status" property="staffStatus" jdbcType="INTEGER"/>
+        <result column="head_portrait" property="headPortrait"
+                jdbcType="VARCHAR"/>
+        <result column="register_time" property="registerTime"
+                jdbcType="BIGINT"/>
+        <result property="staffType" column="staff_type" jdbcType="INTEGER"/>
+        <result property="franchiserCode" column="franchiser_code" jdbcType="VARCHAR"/>
+        <result property="franchiserName" column="franchiser_name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		sid,staff_name,id_card_no,nick_name,phone,password,staff_status,head_portrait,register_time,staff_type,franchiser_code,franchiser_name
+	</sql>
+    <select id="selectByPk" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM c_staff_base a WHERE a.sid = #{sid,jdbcType=BIGINT}
+    </select>
+    <insert id="insert" parameterType="com.zebra.zebraerp.dal.dataobject.StaffBaseDO">
+		INSERT INTO c_staff_base(
+			staff_name,
+			id_card_no,
+			nick_name,
+			phone,
+			password,
+			staff_status,
+			staff_type,
+			head_portrait,
+			register_time,
+			franchiser_code,
+			franchiser_name
+		) VALUES (
+			#{staffName},
+			#{idCardNo},
+			#{nickName},
+			#{phone},
+			#{password},
+			#{staffStatus},
+			#{staffType},
+			#{headPortrait},
+			#{registerTime},
+			#{franchiserCode},
+			#{franchiserName}
+		)
+	</insert>
+    <update id="update" parameterType="com.zebra.zebraerp.dal.dataobject.StaffBaseDO">
+        UPDATE
+        c_staff_base
+        <set>
+            <if test="staffName != null">
+                staff_name = #{staffName},
+            </if>
+            <if test="idCardNo != null">
+                id_card_no = #{idCardNo},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="staffStatus != null">
+                staff_status = #{staffStatus},
+            </if>
+            <if test="staffType != null">
+                staff_type = #{staffType},
+            </if>
+            <if test="headPortrait != null">
+                head_portrait = #{headPortrait},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName}
+            </if>
+        </set>
+        WHERE
+        sid = #{sid}
+    </update>
+    <!-- 删除 -->
+    <update id="delete" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_staff_base
+        WHERE
+        sid = #{sid,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.StaffBaseDO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM c_staff_base a WHERE 1=1
+        <if test="staffStatus != null  ">
+            and staff_status = #{staffStatus,jdbcType=INTEGER}
+        </if>
+        <if test="phone != null">
+           and phone = #{phone}
+        </if>
+        <if test="staffName != null">
+          and staff_name = #{staffName}
+        </if>
+        <if test="sid != null  ">
+            and sid = #{sid,jdbcType=BIGINT}
+        </if>
+        <if test="staffType != null">
+            and staff_type = #{staffType}
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName}
+        </if>
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="selectCountByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.StaffBaseDO"
+            resultType="java.lang.Integer">
+        select count(1)
+        FROM c_staff_base a WHERE 1=1
+        <if test="staffStatus != null  ">
+            and staff_status = #{staffStatus,jdbcType=INTEGER}
+        </if>
+        <if test="sid != null  ">
+            and sid = #{sid,jdbcType=BIGINT}
+        </if>
+        <if test="phone != null">
+           and phone = #{phone}
+        </if>
+        <if test="staffName != null">
+            and staff_name = #{staffName}
+        </if>
+        <if test="staffType != null">
+            and staff_type = #{staffType}
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName}
+        </if>
+
+    </select>
+
+
+</mapper>

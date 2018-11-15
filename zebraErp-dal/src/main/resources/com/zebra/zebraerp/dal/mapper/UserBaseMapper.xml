@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.UserBaseMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.UserBaseDO" id="UserBaseResult">
+        <id property="uid" column="uid"/>
+        <result property="phone" column="phone"/>
+        <result property="password" column="password"/>
+        <result property="headPortrait" column="head_portrait"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="job" column="job"/>
+        <result property="income" column="income"/>
+        <result property="verifyStatus" column="verify_status"/>
+        <result property="actualName" column="actual_name"/>
+        <result property="idCardNo" column="id_card_no"/>
+        <result property="userStatus" column="user_status"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="creditScore" column="credit_score"/>
+        <result property="inviteCode" column="invite_code"/>
+        <result property="invitedCode" column="invited_code"/>
+    </resultMap>
+
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.UserConsumeDO" id="UserConsumeResult">
+        <id property="uid" column="uid"/>
+        <result property="phone" column="phone"/>
+        <result property="consumeAmount" column="consumeAmount"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.uid,
+		c.phone,
+		c.password,
+		c.head_portrait,
+		c.nick_name,
+		c.sex,
+		c.age,
+		c.job,
+		c.income,
+		c.verify_status,
+		c.actual_name,
+		c.id_card_no,
+		c.user_status,
+		c.register_time,
+		c.modify_time,
+		c.credit_score,
+		c.invite_code,
+		c.invited_code
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="uid != null">
+           AND c.uid = #{uid}
+        </if>
+        <if test="phone != null">
+            AND c.phone = #{phone}
+        </if>
+        <if test="password != null">
+            AND c.password = #{password}
+        </if>
+        <if test="headPortrait != null">
+            AND c.head_portrait = #{headPortrait}
+        </if>
+        <if test="nickName != null">
+            AND c.nick_name = #{nickName}
+        </if>
+        <if test="sex != null">
+            AND c.sex = #{sex}
+        </if>
+        <if test="age != null">
+            AND c.age = #{age}
+        </if>
+        <if test="job != null">
+            AND c.job = #{job}
+        </if>
+        <if test="income != null">
+            AND c.income = #{income}
+        </if>
+        <if test="verifyStatus != null">
+            AND c.verify_status = #{verifyStatus}
+        </if>
+        <if test="actualName != null">
+            AND c.actual_name = #{actualName}
+        </if>
+        <if test="idCardNo != null">
+            AND c.id_card_no = #{idCardNo}
+        </if>
+        <if test="userStatus != null">
+            AND c.user_status = #{userStatus}
+        </if>
+        <if test="registerTime != null">
+            AND c.register_time = #{registerTime}
+        </if>
+        <if test="modifyTime != null">
+            AND c.modify_time = #{modifyTime}
+        </if>
+        <if test="creditScore != null">
+            AND c.credit_score = #{creditScore}
+        </if>
+        <if test="inviteCode != null">
+            AND c.invite_code = #{inviteCode}
+        </if>
+        <if test="invitedCode != null">
+            AND c.invited_code = #{invitedCode}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertUserBase" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO">
+		INSERT INTO c_user_base(
+			phone,
+			password,
+			head_portrait,
+			nick_name,
+			sex,
+			age,
+			job,
+			income,
+			verify_status,
+			actual_name,
+			id_card_no,
+			user_status,
+			register_time,
+			modify_time,
+			credit_score,
+			invite_code,
+			invited_code
+		) VALUES (
+			#{phone},
+			#{password},
+			#{headPortrait},
+			#{nickName},
+			#{sex},
+			#{age},
+			#{job},
+			#{income},
+			#{verifyStatus},
+			#{actualName},
+			#{idCardNo},
+			#{userStatus},
+			#{registerTime},
+			#{modifyTime},
+			#{creditScore},
+			#{inviteCode},
+			#{invitedCode}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectUserBaseById" parameterType="java.lang.Long" resultMap="UserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_base c
+        WHERE
+        c.uid = #{uid}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectUserBaseList" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO"
+            resultMap="UserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 查询用户消费列表 -->
+    <select id="selectUserConsumeList" parameterType="com.zebra.zebraerp.dal.dataobject.UserConsumeDO"
+            resultMap="UserConsumeResult">
+        SELECT ub.uid,sum(uo.pay_amount) consumeAmount,ub.phone
+        FROM c_user_base ub LEFT JOIN c_user_order uo ON uo.uid = ub.uid
+        WHERE 1=1
+        <if test="franchiserCode != null">
+            AND uo.bike_code in(SELECT bike_code FROM c_bike cb
+            WHERE cb.franchiser_code = #{franchiserCode}
+            )
+        </if>
+        <if test="uid != null">
+            AND ub.uid = #{uid}
+        </if>
+        <if test="phone != null">
+            AND ub.phone = #{phone}
+        </if>
+        group by ub.uid
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 查询用户消费统计 -->
+    <select id="selectUserConsumeCount" parameterType="com.zebra.zebraerp.dal.dataobject.UserConsumeDO"
+            resultType="java.lang.Integer">
+        SELECT count(1) FROM (SELECT ub.uid,sum(uo.pay_amount) consumeAmount,ub.phone
+        FROM c_user_base ub LEFT JOIN c_user_order uo ON uo.uid = ub.uid
+        WHERE 1=1
+        <if test="franchiserCode != null">
+            AND uo.bike_code in(SELECT bike_code FROM c_bike cb
+            WHERE cb.franchiser_code = #{franchiserCode}
+            )
+        </if>
+        <if test="uid != null">
+            AND ub.uid = #{uid}
+        </if>
+        <if test="phone != null">
+            AND ub.phone = #{phone}
+        </if>
+        group by ub.uid) user_consume
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectUserBaseCount" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_user_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectUserBasePage" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO"
+            resultMap="UserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.uid DESC
+        limit #{offset},#{rows}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateUserBase" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO">
+		UPDATE 
+			c_user_base 
+		SET
+			phone = #{phone},
+			password = #{password},
+			head_portrait = #{headPortrait},
+			nick_name = #{nickName},
+			sex = #{sex},
+			age = #{age},
+			job = #{job},
+			income = #{income},
+			verify_status = #{verifyStatus},
+			actual_name = #{actualName},
+			id_card_no = #{idCardNo},
+			user_status = #{userStatus},
+			register_time = #{registerTime},
+			modify_time = #{modifyTime},
+			credit_score = #{creditScore},
+			invite_code = #{inviteCode},
+			invited_code = #{invitedCode}
+		WHERE 
+			uid = #{uid}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateUserBaseSelective" parameterType="com.zebra.zebraerp.dal.dataobject.UserBaseDO">
+        UPDATE
+        c_user_base
+        <set>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="headPortrait != null">
+                head_portrait = #{headPortrait},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="job != null">
+                job = #{job},
+            </if>
+            <if test="income != null">
+                income = #{income},
+            </if>
+            <if test="verifyStatus != null">
+                verify_status = #{verifyStatus},
+            </if>
+            <if test="actualName != null">
+                actual_name = #{actualName},
+            </if>
+            <if test="idCardNo != null">
+                id_card_no = #{idCardNo},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="creditScore != null">
+                credit_score = #{creditScore},
+            </if>
+            <if test="inviteCode != null">
+                invite_code = #{inviteCode},
+            </if>
+            <if test="invitedCode != null">
+                invited_code = #{invitedCode}
+            </if>
+        </set>
+        WHERE
+        uid = #{uid}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteUserBase" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_user_base
+        WHERE
+        uid = #{uid}
+    </update>
+
+</mapper>

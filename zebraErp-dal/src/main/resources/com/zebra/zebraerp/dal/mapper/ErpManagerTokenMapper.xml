@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.ErpManagerTokenMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO" id="ErpManagerTokenResult">
+        <id property="id" column="id"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="token" column="token"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.id,
+		c.manager_id,
+		c.token,
+		c.last_update_time
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="id != null">
+            AND c.id = #{id}
+        </if>
+        <if test="managerId != null">
+            AND c.manager_id = #{managerId}
+        </if>
+        <if test="token != null">
+            AND c.token = #{token}
+        </if>
+        <if test="lastUpdateTime != null">
+            AND c.last_update_time = #{lastUpdateTime}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertErpManagerToken" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO">
+		INSERT INTO c_erp_manager_token(
+			manager_id,
+			token,
+			last_update_time
+		) VALUES (
+			#{managerId},
+			#{token},
+			#{lastUpdateTime}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectErpManagerTokenById" parameterType="java.lang.Long" resultMap="ErpManagerTokenResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager_token c
+        WHERE
+        c.id = #{id}
+    </select>
+
+    <!-- 根据Token查询 -->
+    <select id="selectErpManagerTokenByToken" parameterType="java.lang.String" resultMap="ErpManagerTokenResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager_token c
+        WHERE
+        c.token = #{token}
+    </select>
+
+    <!-- 根据Token查询 -->
+    <select id="selectErpManagerTokenByManagerId" parameterType="java.lang.Long" resultMap="ErpManagerTokenResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager_token c
+        WHERE
+        c.manager_id = #{managerId}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectErpManagerTokenList" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO"
+            resultMap="ErpManagerTokenResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager_token c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectErpManagerTokenCount" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_erp_manager_token c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectErpManagerTokenPage" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO"
+            resultMap="ErpManagerTokenResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager_token c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.id DESC
+        limit #{offset},#{rows}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateErpManagerToken" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO">
+		UPDATE 
+			c_erp_manager_token 
+		SET
+			manager_id = #{managerId},
+			token = #{token},
+			last_update_time = #{lastUpdateTime}
+		WHERE 
+			id = #{id}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateErpManagerTokenSelective" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerTokenDO">
+        UPDATE
+        c_erp_manager_token
+        <set>
+            <if test="managerId != null">
+                manager_id = #{managerId},
+            </if>
+            <if test="token != null">
+                token = #{token},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime}
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteErpManagerToken" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_erp_manager_token
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.UserOrderMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.UserOrderDO" id="UserOrderResult">
+        <id property="orderId" column="order_id"/>
+        <result property="uid" column="uid"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="orderType" column="order_type"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="payType" column="pay_type"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="startLatitude" column="start_latitude"/>
+        <result property="startLongitude" column="start_longitude"/>
+        <result property="stratAddress" column="strat_address"/>
+        <result property="endLatitude" column="end_latitude"/>
+        <result property="endLongitude" column="end_longitude"/>
+        <result property="endAddress" column="end_address"/>
+        <result property="bikeCode" column="bike_code"/>
+        <result property="batteryCode" column="battery_code"/>
+        <result property="totalDistance" column="total_distance"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="payAmount" column="pay_amount"/>
+        <result property="payOrderNo" column="pay_order_no"/>
+        <result property="kmUnitPrice" column="km_unit_price"/>
+        <result property="hourUnitPrice" column="hour_unit_price"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="bookTime" column="book_time"/>
+        <result property="bookCancelTime" column="book_cancel_time"/>
+        <result property="shareClickNum" column="share_click_num"/>
+        <result property="isApply" column="is_apply"/>
+        <result property="settlementId" column="settlement_id"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.order_id,
+		c.uid,
+		c.nick_name,
+		c.order_type,
+		c.order_status,
+		c.pay_type,
+		c.pay_status,
+		c.start_latitude,
+		c.start_longitude,
+		c.strat_address,
+		c.end_latitude,
+		c.end_longitude,
+		c.end_address,
+		c.bike_code,
+		c.battery_code,
+		c.total_distance,
+		c.total_amount,
+		c.pay_amount,
+		c.pay_order_no,
+		c.km_unit_price,
+		c.hour_unit_price,
+		c.start_time,
+		c.end_time,
+		c.book_time,
+		c.book_cancel_time,
+		c.share_click_num,
+		c.is_apply,
+		c.settlement_id
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="orderId != null">
+            AND c.order_id = #{orderId}
+        </if>
+        <if test="uid != null">
+            AND c.uid = #{uid}
+        </if>
+        <if test="nickName != null">
+            AND c.nick_name = #{nickName}
+        </if>
+        <if test="orderType != null">
+            AND c.order_type = #{orderType}
+        </if>
+        <if test="orderStatus != null">
+            AND c.order_status = #{orderStatus}
+        </if>
+        <if test="payType != null">
+            AND c.pay_type = #{payType}
+        </if>
+        <if test="payStatus != null">
+            AND c.pay_status = #{payStatus}
+        </if>
+        <if test="startLatitude != null">
+            AND c.start_latitude = #{startLatitude}
+        </if>
+        <if test="startLongitude != null">
+            AND c.start_longitude = #{startLongitude}
+        </if>
+        <if test="stratAddress != null">
+            AND c.strat_address = #{stratAddress}
+        </if>
+        <if test="endLatitude != null">
+            AND c.end_latitude = #{endLatitude}
+        </if>
+        <if test="endLongitude != null">
+            AND c.end_longitude = #{endLongitude}
+        </if>
+        <if test="endAddress != null">
+            AND c.end_address = #{endAddress}
+        </if>
+        <if test="bikeCode != null">
+            AND c.bike_code = #{bikeCode}
+        </if>
+        <if test="batteryCode != null">
+            AND c.battery_code = #{batteryCode}
+        </if>
+        <if test="totalDistance != null">
+            AND c.total_distance = #{totalDistance}
+        </if>
+        <if test="totalAmount != null">
+            AND c.total_amount = #{totalAmount}
+        </if>
+        <if test="payAmount != null">
+            AND c.pay_amount = #{payAmount}
+        </if>
+        <if test="payOrderNo != null">
+            AND c.pay_order_no = #{payOrderNo}
+        </if>
+        <if test="kmUnitPrice != null">
+            AND c.km_unit_price = #{kmUnitPrice}
+        </if>
+        <if test="hourUnitPrice != null">
+            AND c.hour_unit_price = #{hourUnitPrice}
+        </if>
+        <if test="startTime != null">
+            AND c.start_time = #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND c.end_time = #{endTime}
+        </if>
+        <if test="bookTime != null">
+            AND c.book_time = #{bookTime}
+        </if>
+        <if test="bookCancelTime != null">
+            AND c.book_cancel_time = #{bookCancelTime}
+        </if>
+        <if test="shareClickNum != null">
+            AND c.share_click_num = #{shareClickNum}
+        </if>
+        <if test="isApply != null">
+            AND c.is_apply = #{isApply}
+        </if>
+        <if test="settlementId != null">
+            AND c.settlement_id = #{settlementId}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertUserOrder" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderDO">
+		INSERT INTO c_user_order(
+		    order_id,
+			uid,
+			nick_name,
+			order_type,
+			order_status,
+			pay_type,
+			pay_status,
+			start_latitude,
+			start_longitude,
+			strat_address,
+			end_latitude,
+			end_longitude,
+			end_address,
+			bike_code,
+			battery_code,
+			total_distance,
+			total_amount,
+			pay_amount,
+			pay_order_no,
+			km_unit_price,
+			hour_unit_price,
+			start_time,
+			end_time,
+			book_time,
+			book_cancel_time,
+			share_click_num,
+			is_apply,
+			settlement_id
+		) VALUES (
+		    #{orderId},
+			#{uid},
+			#{nickName},
+			#{orderType},
+			#{orderStatus},
+			#{payType},
+			#{payStatus},
+			#{startLatitude},
+			#{startLongitude},
+			#{stratAddress},
+			#{endLatitude},
+			#{endLongitude},
+			#{endAddress},
+			#{bikeCode},
+			#{batteryCode},
+			#{totalDistance},
+			#{totalAmount},
+			#{payAmount},
+			#{payOrderNo},
+			#{kmUnitPrice},
+			#{hourUnitPrice},
+			#{startTime},
+			#{endTime},
+			#{bookTime},
+			#{bookCancelTime},
+			#{shareClickNum},
+			#{isApply},
+			#{settlementId}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectUserOrderById" parameterType="java.lang.Long" resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_order c
+        WHERE
+        c.order_id = #{orderId}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectUserOrderList" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderDO"
+            resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_order c
+        WHERE 1=1
+        <include refid="searchCondition"/>
+
+    </select>
+
+    <!-- 查询用户订单结算列表 -->
+    <select id="selectUserOrderListByAppyTime" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderSettlementDO"
+            resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_order c
+        WHERE c.bike_code IN (select `bike_code` from c_bike where franchiser_code=#{franchiserCode}) and c.end_time
+        &lt;= #{appyTime}
+        <if test="isApply != null">
+            AND c.is_apply = #{isApply}
+        </if>
+        <if test="payStatus != null">
+            AND c.pay_status = #{payStatus}
+        </if>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectUserOrderCount" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderListDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_user_order c
+        WHERE 1=1
+        <if test="orderId != null">
+            AND c.order_id = #{orderId}
+        </if>
+        <if test="uid != null">
+            AND c.uid = #{uid,jdbcType=BIGINT}
+        </if>
+        <if test="bikeCodeList != null and bikeCodeList.size() != 0">
+            AND c.bike_code in
+            <foreach item="bikeCode" collection="bikeCodeList" open="("
+                     separator="," close=")">
+                #{bikeCode}
+            </foreach>
+        </if>
+
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectUserOrderPage" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderListDO"
+            resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_order c
+        WHERE 1=1
+        <if test="orderId != null">
+            AND c.order_id = #{orderId}
+        </if>
+        <if test="uid != null">
+            AND c.uid = #{uid}
+        </if>
+        <if test="bikeCodeList != null and bikeCodeList.size() != 0">
+            AND c.bike_code in
+            <foreach item="bikeCode" collection="bikeCodeList" open="("
+                     separator="," close=")">
+                #{bikeCode}
+            </foreach>
+        </if>
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateUserOrder" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderDO">
+		UPDATE 
+			c_user_order 
+		SET
+			uid = #{uid},
+			nick_name = #{nickName},
+			order_type = #{orderType},
+			order_status = #{orderStatus},
+			pay_type = #{payType},
+			pay_status = #{payStatus},
+			start_latitude = #{startLatitude},
+			start_longitude = #{startLongitude},
+			strat_address = #{stratAddress},
+			end_latitude = #{endLatitude},
+			end_longitude = #{endLongitude},
+			end_address = #{endAddress},
+			bike_code = #{bikeCode},
+			battery_code = #{batteryCode},
+			total_distance = #{totalDistance},
+			total_amount = #{totalAmount},
+			pay_amount = #{payAmount},
+			pay_order_no = #{payOrderNo},
+			km_unit_price = #{kmUnitPrice},
+			hour_unit_price = #{hourUnitPrice},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			book_time = #{bookTime},
+			book_cancel_time = #{bookCancelTime},
+			share_click_num = #{shareClickNum},
+			is_apply = #{isApply},
+			settlement_id = #{settlementId}
+		WHERE 
+			order_id = #{orderId}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateUserOrderSelective" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderDO">
+        UPDATE
+        c_user_order
+        <set>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="startLatitude != null">
+                start_latitude = #{startLatitude},
+            </if>
+            <if test="startLongitude != null">
+                start_longitude = #{startLongitude},
+            </if>
+            <if test="stratAddress != null">
+                strat_address = #{stratAddress},
+            </if>
+            <if test="endLatitude != null">
+                end_latitude = #{endLatitude},
+            </if>
+            <if test="endLongitude != null">
+                end_longitude = #{endLongitude},
+            </if>
+            <if test="endAddress != null">
+                end_address = #{endAddress},
+            </if>
+            <if test="bikeCode != null">
+                bike_code = #{bikeCode},
+            </if>
+            <if test="batteryCode != null">
+                battery_code = #{batteryCode},
+            </if>
+            <if test="totalDistance != null">
+                total_distance = #{totalDistance},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount},
+            </if>
+            <if test="payOrderNo != null">
+                pay_order_no = #{payOrderNo},
+            </if>
+            <if test="kmUnitPrice != null">
+                km_unit_price = #{kmUnitPrice},
+            </if>
+            <if test="hourUnitPrice != null">
+                hour_unit_price = #{hourUnitPrice},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="bookTime != null">
+                book_time = #{bookTime},
+            </if>
+            <if test="bookCancelTime != null">
+                book_cancel_time = #{bookCancelTime},
+            </if>
+            <if test="shareClickNum != null">
+                share_click_num = #{shareClickNum},
+            </if>
+            <if test="isApply != null">
+                is_apply = #{isApply},
+            </if>
+            <if test="settlementId != null">
+                settlement_id = #{settlementId}
+            </if>
+        </set>
+        WHERE
+        order_id = #{orderId}
+    </update>
+
+    <!-- 批量修改用户订单 -->
+    <update id="batchUpdateUserOrder" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderBatchDO">
+        UPDATE
+        c_user_order
+        <set>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+            <if test="payType != null">
+                pay_type = #{payType},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="startLatitude != null">
+                start_latitude = #{startLatitude},
+            </if>
+            <if test="startLongitude != null">
+                start_longitude = #{startLongitude},
+            </if>
+            <if test="stratAddress != null">
+                strat_address = #{stratAddress},
+            </if>
+            <if test="endLatitude != null">
+                end_latitude = #{endLatitude},
+            </if>
+            <if test="endLongitude != null">
+                end_longitude = #{endLongitude},
+            </if>
+            <if test="endAddress != null">
+                end_address = #{endAddress},
+            </if>
+            <if test="bikeCode != null">
+                bike_code = #{bikeCode},
+            </if>
+            <if test="batteryCode != null">
+                battery_code = #{batteryCode},
+            </if>
+            <if test="totalDistance != null">
+                total_distance = #{totalDistance},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount},
+            </if>
+            <if test="payOrderNo != null">
+                pay_order_no = #{payOrderNo},
+            </if>
+            <if test="kmUnitPrice != null">
+                km_unit_price = #{kmUnitPrice},
+            </if>
+            <if test="hourUnitPrice != null">
+                hour_unit_price = #{hourUnitPrice},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="bookTime != null">
+                book_time = #{bookTime},
+            </if>
+            <if test="bookCancelTime != null">
+                book_cancel_time = #{bookCancelTime},
+            </if>
+            <if test="shareClickNum != null">
+                share_click_num = #{shareClickNum},
+            </if>
+            <if test="isApply != null">
+                is_apply = #{isApply},
+            </if>
+            <if test="settlementId != null">
+                settlement_id = #{settlementId}
+            </if>
+        </set>
+        <where>
+            <if test="orderIds != null and orderIds.size() != 0">
+                order_id in
+                <foreach item="orderId" collection="orderIds" open="("
+                         separator="," close=")">
+                    #{orderId}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <!-- 根据单车code查询用户订单列表 -->
+    <select id="selectUserOrderListByBikeCodeList" parameterType="com.zebra.zebraerp.dal.dataobject.UserOrderListDO"
+            resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_user_order c
+        WHERE 1=1
+        <if test="orderStatus != null">
+            AND c.order_status = #{orderStatus}
+        </if>
+        <if test="payStatus != null">
+            and c.pay_status = #{payStatus}
+        </if>
+        <if test="bikeCodeList != null and bikeCodeList.size() != 0">
+            and c.bike_code in
+            <foreach item="bikeCode" collection="bikeCodeList" open="("
+                     separator="," close=")">
+                #{bikeCode}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询加盟商近30天的订单情况 -->
+    <select id="selectUserOrderListByFranchiserCode"
+            parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBikeOperateDO"
+            resultMap="UserOrderResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM c_user_order c where DATE_SUB(CURDATE(),INTERVAL 30 DAY) &lt;= DATE(from_unixtime(start_time))
+        and c.bike_code in(select bike_code from c_bike where franchiser_code=#{franchiserCode})
+        order by c.start_time ASC;
+    </select>
+
+
+    <!-- 删除 -->
+    <update id="deleteUserOrder" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_user_order
+        WHERE
+        order_id = #{orderId}
+    </update>
+
+</mapper>

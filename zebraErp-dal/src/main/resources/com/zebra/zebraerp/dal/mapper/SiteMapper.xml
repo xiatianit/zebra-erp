@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.SiteMapper">
+    <resultMap id="BaseResultMap" type="com.zebra.zebraerp.dal.dataobject.SiteDO">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="site_name" property="siteName" jdbcType="VARCHAR"/>
+        <result column="site_address" property="siteAddress" jdbcType="VARCHAR"/>
+        <result column="site_status" property="siteStatus" jdbcType="INTEGER"/>
+        <result column="service_station_id" property="serviceStationId"
+                jdbcType="BIGINT"/>
+        <result column="service_station_name" property="serviceStationName"
+                jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="DECIMAL"/>
+        <result column="longitude" property="longitude" jdbcType="DECIMAL"/>
+        <result column="province_code" property="provinceCode"
+                jdbcType="VARCHAR"/>
+        <result column="province_name" property="provinceName"
+                jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="zone_code" property="zoneCode" jdbcType="VARCHAR"/>
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR"/>
+        <result column="bike_num" property="bikeNum" jdbcType="INTEGER"/>
+        <result property="franchiserCode" column="franchiser_code" jdbcType="VARCHAR"/>
+        <result property="franchiserName" column="franchiser_name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,site_name,site_address,site_status,service_station_id,service_station_name,latitude,
+		longitude,province_code,province_name,city_code,city_name,zone_code,zone_name,bike_num,
+		franchiser_code,franchiser_name
+	</sql>
+
+    <select id="selectByPk" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM c_site a WHERE a.id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByServiceStationId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM c_site a WHERE a.service_station_id = #{serviceStationId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insert" parameterType="com.zebra.zebraerp.dal.dataobject.SiteDO">
+		INSERT INTO c_site
+
+		(site_name,site_address,site_status,service_station_id,service_station_name,latitude,
+		longitude,province_code,province_name,city_code,city_name,zone_code,zone_name,bike_num,franchiser_code,franchiser_name)
+		VALUES (
+
+				#{siteName,jdbcType=VARCHAR},
+				#{siteAddress,jdbcType=VARCHAR},
+				#{siteStatus,jdbcType=INTEGER},
+				#{serviceStationId,jdbcType=VARCHAR},
+				#{serviceStationName,jdbcType=VARCHAR},
+				#{latitude,jdbcType=DECIMAL},
+				#{longitude,jdbcType=DECIMAL},
+				#{provinceCode,jdbcType=VARCHAR},
+				#{provinceName,jdbcType=VARCHAR},
+				#{cityCode,jdbcType=VARCHAR},
+				#{cityName,jdbcType=VARCHAR},
+				#{zoneCode,jdbcType=VARCHAR},
+				#{zoneName,jdbcType=VARCHAR},
+				#{bikeNum,jdbcType=INTEGER},
+				#{franchiserCode,jdbcType=VARCHAR},
+                #{franchiserName,jdbcType=VARCHAR}
+
+		)
+	</insert>
+
+    <update id="update" parameterType="com.zebra.zebraerp.dal.dataobject.SiteDO">
+        UPDATE c_site
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="siteName != null">
+                site_name = #{siteName,jdbcType=VARCHAR},
+            </if>
+            <if test="siteAddress != null">
+                site_address = #{siteAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="siteStatus != null">
+                site_status = #{siteStatus,jdbcType=INTEGER},
+            </if>
+            <if test="serviceStationId != null">
+                service_station_id = #{serviceStationId,jdbcType=BIGINT},
+            </if>
+            <if test="serviceStationName != null">
+                service_station_name = #{serviceStationName,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude,jdbcType=DECIMAL},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude,jdbcType=DECIMAL},
+            </if>
+            <if test="provinceCode != null">
+                province_code = #{provinceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityCode != null">
+                city_code = #{cityCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="zoneCode != null">
+                zone_code = #{zoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="zoneName != null">
+                zone_name = #{zoneName,jdbcType=VARCHAR},
+            </if>
+            <if test="bikeNum != null">
+                bike_num = #{bikeNum,jdbcType=INTEGER},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateUnbind">
+		UPDATE c_site
+		set service_station_id = NULL
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+    <update id="updateBind"
+            parameterType="com.zebra.zebraerp.dal.dataobject.businessObject.SiteBO">
+        UPDATE c_site
+        set service_station_id = #{serviceStationId,jdbcType=BIGINT}
+       <where>
+            <if test="siteIdList != null and siteIdList.size() != 0">
+               and id in
+                <foreach item="siteId" collection="siteIdList" open="("
+                         separator="," close=")">
+                    #{siteId}
+                </foreach>
+            </if>
+       </where>
+    </update>
+
+
+
+    <!-- 删除 -->
+    <update id="delete" parameterType="java.lang.Long">
+        delete FROM
+        c_site
+        WHERE
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.SiteDO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM c_site a WHERE 1=1
+        <if test="siteName != null and siteName !='' ">
+            and site_name LIKE concat('%', #{siteName} ,'%')
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName,jdbcType=VARCHAR}
+        </if>
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="siteStatus != null">
+            and site_status = #{siteStatus,jdbcType=INTEGER}
+        </if>
+        <if test="serviceStationName != null">
+            and service_station_name = #{serviceStationName,jdbcType=VARCHAR}
+        </if>
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="selectCountByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.SiteDO"
+            resultType="java.lang.Integer">
+        select count(1)
+        FROM c_site a WHERE 1=1
+        <if test="siteName != null and siteName !='' ">
+            and site_name LIKE concat('%', #{siteName} ,'%')
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName}
+        </if>
+        <if test="id != null">
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="siteStatus != null">
+            and site_status = #{siteStatus,jdbcType=INTEGER}
+        </if>
+        <if test="serviceStationName != null">
+            and service_station_name = #{serviceStationName,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.WalletMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.WalletDO" id="WalletResult">
+        <id property="uid" column="uid"/>
+        <result property="balanceAmount" column="balance_amount"/>
+        <result property="depositAmount" column="deposit_amount"/>
+        <result property="depositSource" column="deposit_source"/>
+        <result property="depositAccount" column="deposit_account"/>
+        <result property="depositStatus" column="deposit_status"/>
+        <result property="depositOrderId" column="deposit_order_id"/>
+        <result property="depositPayType" column="deposit_pay_type"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.uid,
+		c.balance_amount,
+		c.deposit_amount,
+		c.deposit_source,
+		c.deposit_account,
+		c.deposit_status,
+		c.deposit_order_id,
+		c.deposit_pay_type
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="uid != null">
+           AND c.uid = #{uid}
+        </if>
+        <if test="balanceAmount != null">
+            AND c.balance_amount = #{balanceAmount}
+        </if>
+        <if test="depositAmount != null">
+            AND c.deposit_amount = #{depositAmount}
+        </if>
+        <if test="depositSource != null">
+            AND c.deposit_source = #{depositSource}
+        </if>
+        <if test="depositAccount != null">
+            AND c.deposit_account = #{depositAccount}
+        </if>
+        <if test="depositStatus != null">
+            AND c.deposit_status = #{depositStatus}
+        </if>
+        <if test="depositOrderId != null">
+            AND c.deposit_order_id = #{depositOrderId}
+        </if>
+        <if test="depositPayType != null">
+            AND c.deposit_pay_type = #{depositPayType}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertWallet" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO">
+		INSERT INTO c_wallet(
+			balance_amount,
+			deposit_amount,
+			deposit_source,
+			deposit_account,
+			deposit_status,
+			deposit_order_id,
+			deposit_pay_type
+		) VALUES (
+			#{balanceAmount},
+			#{depositAmount},
+			#{depositSource},
+			#{depositAccount},
+			#{depositStatus},
+			#{depositOrderId},
+			#{depositPayType}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectWalletById" parameterType="java.lang.Long" resultMap="WalletResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_wallet c
+        WHERE
+        c.uid = #{uid}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectWalletList" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO" resultMap="WalletResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_wallet c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectWalletCount" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_wallet c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectWalletPage" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO" resultMap="WalletResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_wallet c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.uid DESC
+        LIMIT #{pageIndex}, #{pageSize}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateWallet" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO">
+		UPDATE 
+			c_wallet 
+		SET
+			balance_amount = #{balanceAmount},
+			deposit_amount = #{depositAmount},
+			deposit_source = #{depositSource},
+			deposit_account = #{depositAccount},
+			deposit_status = #{depositStatus},
+			deposit_order_id = #{depositOrderId},
+			deposit_pay_type = #{depositPayType}
+		WHERE 
+			uid = #{uid}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateWalletSelective" parameterType="com.zebra.zebraerp.dal.dataobject.WalletDO">
+        UPDATE
+        c_wallet
+        <set>
+            <if test="balanceAmount != null">
+                balance_amount = #{balanceAmount},
+            </if>
+            <if test="depositAmount != null">
+                deposit_amount = #{depositAmount},
+            </if>
+            <if test="depositSource != null">
+                deposit_source = #{depositSource},
+            </if>
+            <if test="depositAccount != null">
+                deposit_account = #{depositAccount},
+            </if>
+            <if test="depositStatus != null">
+                deposit_status = #{depositStatus},
+            </if>
+            <if test="depositOrderId != null">
+                deposit_order_id = #{depositOrderId},
+            </if>
+            <if test="depositPayType != null">
+                deposit_pay_type = #{depositPayType}
+            </if>
+        </set>
+        WHERE
+        uid = #{uid}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteWallet" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_wallet
+        WHERE
+        uid = #{uid}
+    </update>
+
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.ZoneMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.ZoneDO" id="ZoneResult">
+        <id property="zoneCode" column="zone_code"/>
+        <result property="zoneName" column="zone_name"/>
+        <result property="zoneAbbr" column="zone_abbr"/>
+        <result property="zhSpell" column="zh_spell"/>
+        <result property="provinceCode" column="province_code"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="cityCode" column="city_code"/>
+        <result property="cityName" column="city_name"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.zone_code,
+		c.zone_name,
+		c.zone_abbr,
+		c.zh_spell,
+		c.province_code,
+		c.province_name,
+		c.city_code,
+		c.city_name
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="zoneCode != null">
+           AND c.zone_code = #{zoneCode}
+        </if>
+        <if test="zoneName != null">
+            AND c.zone_name = #{zoneName}
+        </if>
+        <if test="zoneAbbr != null">
+            AND c.zone_abbr = #{zoneAbbr}
+        </if>
+        <if test="zhSpell != null">
+            AND c.zh_spell = #{zhSpell}
+        </if>
+        <if test="provinceCode != null">
+            AND c.province_code = #{provinceCode}
+        </if>
+        <if test="provinceName != null">
+            AND c.province_name = #{provinceName}
+        </if>
+        <if test="cityCode != null">
+            AND c.city_code = #{cityCode}
+        </if>
+        <if test="cityName != null">
+            AND c.city_name = #{cityName}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertZone" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO">
+		INSERT INTO c_zone(
+			zone_name,
+			zone_abbr,
+			zh_spell,
+			province_code,
+			province_name,
+			city_code,
+			city_name
+		) VALUES (
+			#{zoneName},
+			#{zoneAbbr},
+			#{zhSpell},
+			#{provinceCode},
+			#{provinceName},
+			#{cityCode},
+			#{cityName}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectZoneById" parameterType="java.lang.String" resultMap="ZoneResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_zone c
+        WHERE
+        c.zone_code = #{zoneCode}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectZoneList" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO" resultMap="ZoneResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_zone c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectZoneCount" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_zone c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectZonePage" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO" resultMap="ZoneResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_zone c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.zone_code DESC
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateZone" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO">
+		UPDATE 
+			c_zone 
+		SET
+			zone_name = #{zoneName},
+			zone_abbr = #{zoneAbbr},
+			zh_spell = #{zhSpell},
+			province_code = #{provinceCode},
+			province_name = #{provinceName},
+			city_code = #{cityCode},
+			city_name = #{cityName}
+		WHERE 
+			zone_code = #{zoneCode}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateZoneSelective" parameterType="com.zebra.zebraerp.dal.dataobject.ZoneDO">
+        UPDATE
+        c_zone
+        <set>
+            <if test="zoneName != null">
+                zone_name = #{zoneName},
+            </if>
+            <if test="zoneAbbr != null">
+                zone_abbr = #{zoneAbbr},
+            </if>
+            <if test="zhSpell != null">
+                zh_spell = #{zhSpell},
+            </if>
+            <if test="provinceCode != null">
+                province_code = #{provinceCode},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName},
+            </if>
+            <if test="cityCode != null">
+                city_code = #{cityCode},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName}
+            </if>
+        </set>
+        WHERE
+        zone_code = #{zoneCode}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteZone" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_zone
+        WHERE
+        zone_code = #{zoneCode}
+    </update>
+
+</mapper>

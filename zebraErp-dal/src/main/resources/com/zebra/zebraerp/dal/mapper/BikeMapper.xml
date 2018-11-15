@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.BikeMapper">
+    <resultMap id="BaseResultMap" type="com.zebra.zebraerp.dal.dataobject.BikeDO">
+        <result column="bike_code" property="bikeCode" jdbcType="VARCHAR"/>
+        <result column="bike_no" property="bikeNo" jdbcType="VARCHAR"/>
+        <result column="bike_model" property="bikeModel" jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="zone_code" property="zoneCode" jdbcType="VARCHAR"/>
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR"/>
+        <result column="site_id" property="siteId" jdbcType="BIGINT"/>
+        <result column="site_name" property="siteName" jdbcType="VARCHAR"/>
+        <result column="bike_plate_no" property="bikePlateNo" jdbcType="VARCHAR"/>
+        <result column="plate_end_time" property="plateEndTime"
+                jdbcType="BIGINT"/>
+        <result column="bike_source" property="bikeSource" jdbcType="INTEGER"/>
+        <result column="bike_status" property="bikeStatus" jdbcType="INTEGER"/>
+        <result column="battery_code" property="batteryCode" jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="DECIMAL"/>
+        <result column="longitude" property="longitude" jdbcType="DECIMAL"/>
+        <result column="limit_area" property="limitArea" jdbcType="VARCHAR"/>
+        <result column="opera_time" property="operaTime" jdbcType="BIGINT"/>
+        <result column="warranty_start" property="warrantyStart"
+                jdbcType="BIGINT"/>
+        <result column="warranty_end" property="warrantyEnd" jdbcType="BIGINT"/>
+        <result column="warranty_remark" property="warrantyRemark"
+                jdbcType="VARCHAR"/>
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="franchiser_code" property="franchiserCode" jdbcType="VARCHAR"/>
+        <result column="franchiser_name" property="franchiserName" jdbcType="VARCHAR"/>
+        <result column="gprs_phone" property="gprsPhone" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="battery_elec" property="batteryElec" jdbcType="INTEGER"/>
+        <result column="rest_mileage" property="restMileage" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		bike_code,bike_no,bike_model,city_code,city_name,zone_code,zone_name,site_id,site_name,
+		bike_plate_no,plate_end_time,bike_source,bike_status,battery_code,latitude,
+		longitude,limit_area,opera_time,warranty_start,warranty_end,warranty_remark,sid,
+		franchiser_code,franchiser_name,gprs_phone,create_time,battery_elec,rest_mileage
+	</sql>
+    <select id="selectByPk" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM c_bike a WHERE a.bike_code = #{bikeCode,jdbcType=VARCHAR}
+    </select>
+    <insert id="insert" parameterType="com.zebra.zebraerp.dal.dataobject.BikeDO">
+		INSERT INTO c_bike(
+		    bike_code,
+		    bike_no,
+			bike_model,
+			city_code,
+			city_name,
+			zone_code,
+			zone_name,
+			site_id,
+			site_name,
+			bike_plate_no,
+			plate_end_time,
+			bike_source,
+			bike_status,
+			battery_code,
+			latitude,
+			longitude,
+			current_address,
+			limit_area,
+			opera_time,
+			warranty_start,
+			warranty_end,
+			warranty_remark,
+			sid,
+			franchiser_code,
+			franchiser_name,
+			gprs_phone,
+			create_time,
+			battery_elec,
+			rest_mileage
+		) VALUES (
+		    #{bikeCode},
+		    #{bikeNo},
+			#{bikeModel},
+			#{cityCode},
+			#{cityName},
+			#{zoneCode},
+			#{zoneName},
+			#{siteId},
+			#{siteName},
+			#{bikePlateNo},
+			#{plateEndTime},
+			#{bikeSource},
+			#{bikeStatus},
+			#{batteryCode},
+			#{latitude},
+			#{longitude},
+			#{currentAddress},
+			#{limitArea},
+			#{operaTime},
+			#{warrantyStart},
+			#{warrantyEnd},
+			#{warrantyRemark},
+			#{sid},
+			#{franchiserCode},
+			#{franchiserName},
+			#{gprsPhone},
+			#{createTime},
+			#{batteryElec},
+			#{restMileage}
+		)
+	</insert>
+    <update id="update" parameterType="com.zebra.zebraerp.dal.dataobject.BikeDO">
+        UPDATE c_bike
+        <set>
+            <if test="bikeNo != null">
+                bike_no = #{bikeNo},
+            </if>
+            <if test="bikeModel != null">
+                bike_model = #{bikeModel},
+            </if>
+            <if test="cityCode != null">
+                city_code = #{cityCode},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName},
+            </if>
+            <if test="zoneCode != null">
+                zone_code = #{zoneCode},
+            </if>
+            <if test="zoneName != null">
+                zone_name = #{zoneName},
+            </if>
+            <if test="siteId != null">
+                site_id = #{siteId},
+            </if>
+            <if test="siteName != null">
+                site_name = #{siteName},
+            </if>
+            <if test="bikePlateNo != null">
+                bike_plate_no = #{bikePlateNo},
+            </if>
+            <if test="plateEndTime != null">
+                plate_end_time = #{plateEndTime},
+            </if>
+            <if test="bikeSource != null">
+                bike_source = #{bikeSource},
+            </if>
+            <if test="bikeStatus != null">
+                bike_status = #{bikeStatus},
+            </if>
+            <if test="batteryCode != null">
+                battery_code = #{batteryCode},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="currentAddress != null">
+                current_address = #{currentAddress},
+            </if>
+            <if test="limitArea != null">
+                limit_area = #{limitArea},
+            </if>
+            <if test="operaTime != null">
+                opera_time = #{operaTime},
+            </if>
+            <if test="warrantyStart != null">
+                warranty_start = #{warrantyStart},
+            </if>
+            <if test="warrantyEnd != null">
+                warranty_end = #{warrantyEnd},
+            </if>
+            <if test="warrantyRemark != null">
+                warranty_remark = #{warrantyRemark},
+            </if>
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName},
+            </if>
+            <if test="gprsPhone != null">
+                gprs_phone = #{gprsPhone},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="batteryElec != null">
+                battery_elec = #{batteryElec},
+            </if>
+            <if test="restMileage != null">
+                rest_mileage = #{restMileage}
+            </if>
+        </set>
+        where bike_code = #{bikeCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 删除 -->
+    <update id="delete" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_bike
+        WHERE
+        bike_code = #{bikeCode}
+    </update>
+
+    <update id="updateBikeBindSite"
+            parameterType="com.zebra.zebraerp.dal.dataobject.businessObject.BikeBindSiteBO">
+        UPDATE c_bike
+        set site_id = #{siteId,jdbcType=BIGINT},
+        city_code = #{cityCode,jdbcType=VARCHAR},
+        city_name = #{cityName,jdbcType=VARCHAR},
+        zone_code = #{zoneCode,jdbcType=VARCHAR},
+        zone_name =
+        #{zoneName,jdbcType=VARCHAR}
+        <where>
+            <if test="bikeCodeList != null and bikeCodeList.size() != 0">
+               and bike_code in
+                <foreach item="bikeCode" collection="bikeCodeList" open="("
+                         separator="," close=")">
+                    #{bikeCode}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateBikeBindStaff"
+            parameterType="com.zebra.zebraerp.dal.dataobject.businessObject.BikeBindSiteBO">
+        UPDATE c_bike
+        set sid = #{sid,jdbcType=BIGINT}
+        <where>
+            <if test="bikeCodeList != null and bikeCodeList.size() != 0">
+                bike_code in
+                <foreach item="bikeCode" collection="bikeCodeList" open="("
+                         separator="," close=")">
+                    #{bikeCode}
+                </foreach>
+            </if>
+         </where>
+    </update>
+
+    <update id="updateBikeUnBindSite">
+        UPDATE c_bike
+        set site_id = NULL,
+        site_name = NULL,
+        city_code = NULL,
+        city_name = NULL,
+        zone_code = NULL,
+        zone_name = NULL
+          WHERE  bike_code = #{bikeCode}
+    </update>
+
+    <update id="updateBikeUnBindStaff">
+        UPDATE c_bike
+        set sid = NULL
+          WHERE  bike_code = #{bikeCode}
+    </update>
+
+    <select id="selectBikeByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.BikeDO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM c_bike  WHERE 1=1
+        <if test="bikeCode != null  ">
+            and bike_code = #{bikeCode}
+        </if>
+        <if test="bikeNo != null  ">
+            and bike_no = #{bikeNo}
+        </if>
+        <if test="bikeStatus != null  ">
+            and bike_status = #{bikeStatus}
+        </if>
+        <if test="siteId != null  ">
+            and site_id = #{siteId}
+        </if>
+        <if test="sid != null  ">
+            and sid = #{sid}
+        </if>
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName}
+        </if>
+
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="bikeModel != null">
+            and bike_model = #{bikeModel}
+        </if>
+    </select>
+
+    <select id="selectByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.BikeDO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM c_bike  WHERE 1=1
+        <if test="bikeNo != null and bikeNo !='' ">
+            and bike_no = #{bikeNo}
+        </if>
+        <if test="bikeStatus != null  ">
+            and bike_status = #{bikeStatus}
+        </if>
+
+        <if test="siteId != null  ">
+            and site_id = #{siteId}
+        </if>
+
+        <if test="sid != null  ">
+            and sid = #{sid}
+        </if>
+
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="bikeModel != null">
+            and bike_model = #{bikeModel}
+        </if>
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="selectCountByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.BikeDO"
+            resultType="java.lang.Integer">
+        select count(1)
+        FROM c_bike  WHERE 1=1
+        <if test="bikeNo != null and bikeNo !='' ">
+            and bike_no = #{bikeNo}
+        </if>
+        <if test="bikeStatus != null  ">
+            and bike_status = #{bikeStatus,jdbcType=INTEGER}
+        </if>
+
+        <if test="siteId != null  ">
+            and site_id = #{siteId,jdbcType=BIGINT}
+        </if>
+
+        <if test="sid != null  ">
+            and sid = #{sid,jdbcType=BIGINT}
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+        <if test="bikeModel != null">
+            and bike_model = #{bikeModel}
+        </if>
+    </select>
+
+    <select id="selectFranchiserOperaBikeCountByDay" parameterType="com.zebra.zebraerp.dal.dataobject.BikeCountDO"
+            resultType="java.lang.Integer">
+        select count(1) from c_bike where FROM_UNIXTIME(opera_time,"%Y%m%d") = #{operaDay}
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName}
+        </if>
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode}
+        </if>
+    </select>
+
+</mapper>

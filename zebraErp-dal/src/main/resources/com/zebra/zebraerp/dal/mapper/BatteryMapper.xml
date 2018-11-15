@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.BatteryMapper">
+    <resultMap id="BaseResultMap" type="com.zebra.zebraerp.dal.dataobject.BatteryDO">
+        <result column="battery_code" property="batteryCode" jdbcType="VARCHAR"/>
+        <result column="battery_model" property="batteryModel"
+                jdbcType="VARCHAR"/>
+        <result column="battery_capacity" property="batteryCapacity"
+                jdbcType="DOUBLE"/>
+        <result column="battery_elec" property="batteryElec" jdbcType="INTEGER"/>
+
+        <result column="terminal_server_address" property="terminalServerAddress"
+                jdbcType="VARCHAR"/>
+
+        <result column="rest_mileage" property="restMileage" jdbcType="DOUBLE"/>
+        <result column="bike_code" property="bikeCode" jdbcType="VARCHAR"/>
+        <result column="last_location" property="lastLocation"
+                jdbcType="VARCHAR"/>
+        <result column="gprs_no" property="gprsNo" jdbcType="VARCHAR"/>
+        <result column="gprs_rest_charge" property="gprsRestCharge"
+                jdbcType="DOUBLE"/>
+        <result column="battery_status" property="batteryStatus"
+                jdbcType="INTEGER"/>
+        <result column="latitude" property="latitude" jdbcType="DECIMAL"/>
+        <result column="longitude" property="longitude" jdbcType="DECIMAL"/>
+        <result column="opera_time" property="operaTime" jdbcType="BIGINT"/>
+        <result column="warranty_start" property="warrantyStart"
+                jdbcType="BIGINT"/>
+        <result column="warranty_end" property="warrantyEnd" jdbcType="BIGINT"/>
+        <result column="warranty_remark" property="warrantyRemark"
+                jdbcType="VARCHAR"/>
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result property="franchiserCode" column="franchiser_code" jdbcType="VARCHAR"/>
+        <result property="franchiserName" column="franchiser_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		battery_code,battery_model,battery_capacity,battery_elec,rest_mileage,bike_code,
+		last_location,gprs_no,gprs_rest_charge,battery_status,opera_time,warranty_start,
+		warranty_end,warranty_remark,sid,remark,franchiser_code,franchiser_name,create_time
+	</sql>
+    <select id="selectByPk" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM c_battery a WHERE a.battery_code =
+        #{batteryCode,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.zebra.zebraerp.dal.dataobject.BatteryDO">
+		INSERT INTO c_battery(
+            battery_code,
+			battery_model,
+			battery_capacity,
+			battery_elec,
+			terminal_server_address,
+			rest_mileage,
+			bike_code,
+			last_location,
+			gprs_no,
+			gprs_rest_charge,
+			battery_status,
+			latitude,
+			longitude,
+			opera_time,
+			warranty_start,
+			warranty_end,
+			warranty_remark,
+			sid,
+			franchiser_code,
+			franchiser_name,
+			remark,
+			create_time
+		) VALUES (
+		    #{batteryCode},
+			#{batteryModel},
+			#{batteryCapacity},
+			#{batteryElec},
+			#{terminalServerAddress},
+			#{restMileage},
+			#{bikeCode},
+			#{lastLocation},
+			#{gprsNo},
+			#{gprsRestCharge},
+			#{batteryStatus},
+			#{latitude},
+			#{longitude},
+			#{operaTime},
+			#{warrantyStart},
+			#{warrantyEnd},
+			#{warrantyRemark},
+			#{sid},
+			#{franchiserCode},
+			#{franchiserName},
+			#{remark},
+			#{createTime}
+		)
+	</insert>
+    <update id="update" parameterType="com.zebra.zebraerp.dal.dataobject.BatteryDO">
+        UPDATE c_battery
+        <set>
+            <if test="batteryCode != null">
+                battery_code = #{batteryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="batteryModel != null">
+                battery_model =
+                #{batteryModel,jdbcType=VARCHAR},
+            </if>
+            <if test="batteryCapacity != null">
+                battery_capacity = #{batteryCapacity,jdbcType=DOUBLE},
+            </if>
+            <if test="batteryElec != null">
+                battery_elec = #{batteryElec,jdbcType=INTEGER},
+            </if>
+            <if test="terminalServerAddress != null">
+                terminal_server_address =
+                #{terminalServerAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="restMileage != null">
+                rest_mileage = #{restMileage,jdbcType=DOUBLE},
+            </if>
+            <if test="bikeCode != null">
+                bike_code = #{bikeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLocation != null">
+                last_location = #{lastLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="gprsNo != null">
+                gprs_no = #{gprsNo,jdbcType=VARCHAR},
+            </if>
+            <if test="gprsRestCharge != null">
+                gprs_rest_charge = #{gprsRestCharge,jdbcType=DOUBLE},
+            </if>
+            <if test="batteryStatus != null">
+                battery_status = #{batteryStatus,jdbcType=INTEGER},
+            </if>
+            <if test="operaTime != null">
+                opera_time = #{operaTime,jdbcType=BIGINT},
+            </if>
+            <if test="warrantyStart != null">
+                warranty_start = #{warrantyStart,jdbcType=BIGINT},
+            </if>
+            <if test="warrantyEnd != null">
+                warranty_end = #{warrantyEnd,jdbcType=BIGINT},
+            </if>
+            <if test="warrantyRemark != null">
+                warranty_remark = #{warrantyRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="sid != null">
+                sid = #{sid,jdbcType=BIGINT},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode,jdbcType=VARCHAR},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=BIGINT}
+            </if>
+        </set>
+        where battery_code = #{batteryCode,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateBatteryBindStaff"
+            parameterType="com.zebra.zebraerp.dal.dataobject.businessObject.BatteryBindStaffBO">
+        UPDATE c_battery
+        set sid = #{sid,jdbcType=BIGINT}
+        <where>
+            <if test="batteryCodeList != null and batteryCodeList.size() != 0">
+                battery_code in
+                <foreach item="batteryCode" collection="batteryCodeList"
+                         open="(" separator="," close=")">
+                    #{batteryCode}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="selectByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.BatteryDO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM c_battery a WHERE 1=1
+        <if test="batteryCode != null and batteryCode !='' ">
+            and battery_code LIKE concat('%', #{batteryCode} ,'%')
+        </if>
+
+        <if test="batteryStatus != null  ">
+            and battery_status = #{batteryStatus,jdbcType=INTEGER}
+        </if>
+
+        <if test="sid != null  ">
+            and sid = #{sid,jdbcType=BIGINT}
+        </if>
+
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode,jdbcType=VARCHAR}
+        </if>
+
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName,jdbcType=VARCHAR}
+        </if>
+
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="selectCountByCondition" parameterType="com.zebra.zebraerp.dal.dataobject.BatteryDO"
+            resultType="java.lang.Integer">
+        select count(1)
+        FROM c_battery a WHERE 1=1
+        <if test="batteryCode != null and batteryCode !='' ">
+            and battery_code LIKE concat('%', #{batteryCode} ,'%')
+        </if>
+
+        <if test="batteryStatus != null  ">
+            and battery_status = #{batteryStatus,jdbcType=INTEGER}
+        </if>
+
+        <if test="sid != null  ">
+            and sid = #{sid,jdbcType=BIGINT}
+        </if>
+
+        <if test="franchiserCode != null">
+            and franchiser_code = #{franchiserCode,jdbcType=VARCHAR}
+        </if>
+
+        <if test="franchiserName != null">
+            and franchiser_name = #{franchiserName,jdbcType=VARCHAR}
+        </if>
+
+    </select>
+
+    <!-- 删除 -->
+    <update id="delete" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_battery
+        WHERE
+        battery_code = #{batteryCode,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

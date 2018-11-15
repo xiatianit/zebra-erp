@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.FranchiserBaseMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO" id="FranchiserBaseResult">
+        <id property="franchiserCode" column="franchiser_code"/>
+        <result property="phone" column="phone"/>
+        <result property="franchiserName" column="franchiser_name"/>
+        <result property="provinceCode" column="province_code"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="cityCode" column="city_code"/>
+        <result property="cityName" column="city_name"/>
+        <result property="zoneCode" column="zone_code"/>
+        <result property="zoneName" column="zone_name"/>
+        <result property="password" column="password"/>
+        <result property="status" column="status"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.franchiser_code,
+		c.phone,
+		c.franchiser_name,
+		c.province_code,
+		c.province_name,
+		c.city_code,
+		c.city_name,
+		c.zone_code,
+		c.zone_name,
+		c.password,
+		c.`status`,
+		c.modified_time,
+		c.create_time
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="franchiserCode != null">
+           AND c.franchiser_code = #{franchiserCode}
+        </if>
+        <if test="phone != null">
+            AND c.phone = #{phone}
+        </if>
+        <if test="franchiserName != null">
+            AND c.franchiser_name LIKE concat('%', #{franchiserName} ,'%')
+        </if>
+        <if test="provinceCode != null">
+            AND c.province_code = #{provinceCode}
+        </if>
+        <if test="provinceName != null">
+            AND c.province_name = #{provinceName}
+        </if>
+        <if test="cityCode != null">
+            AND c.city_code = #{cityCode}
+        </if>
+        <if test="cityName != null">
+            AND c.city_name = #{cityName}
+        </if>
+        <if test="zoneCode != null">
+            AND c.zone_code = #{zoneCode}
+        </if>
+        <if test="zoneName != null">
+            AND c.zone_name = #{zoneName}
+        </if>
+        <if test="password != null">
+            AND c.password = #{password}
+        </if>
+        <if test="status != null">
+            AND c.`status` = #{status}
+        </if>
+        <if test="modifiedTime != null">
+            AND c.modified_time = #{modifiedTime}
+        </if>
+        <if test="createTime != null">
+            AND c.create_time = #{createTime}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertFranchiserBase" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO">
+		INSERT INTO c_franchiser_base(
+		    franchiser_code,
+			phone,
+			franchiser_name,
+			province_code,
+			province_name,
+			city_code,
+			city_name,
+			zone_code,
+			zone_name,
+			password,
+			`status`,
+			modified_time,
+			create_time
+		) VALUES (
+		    #{franchiserCode},
+			#{phone},
+			#{franchiserName},
+			#{provinceCode},
+			#{provinceName},
+			#{cityCode},
+			#{cityName},
+			#{zoneCode},
+			#{zoneName},
+			#{password},
+			#{status},
+			#{modifiedTime},
+			#{createTime}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectFranchiserBaseById" parameterType="java.lang.String" resultMap="FranchiserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_base c
+        WHERE
+        c.franchiser_code = #{franchiserCode}
+    </select>
+
+    <!-- 根据账号查询 -->
+    <select id="selectFranchiserBaseByPhone" parameterType="java.lang.String" resultMap="FranchiserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_base c
+        WHERE
+        c.phone = #{phone}
+    </select>
+
+    <!-- 根据加盟商名称查询 -->
+    <select id="selectFranchiserBaseByName" parameterType="java.lang.String" resultMap="FranchiserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_base c
+        WHERE
+        c.franchiser_name = #{franchiserName}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectFranchiserBaseList" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO"
+            resultMap="FranchiserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectFranchiserBaseCount" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_franchiser_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectFranchiserBasePage" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO"
+            resultMap="FranchiserBaseResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_base c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.franchiser_code DESC
+        <if test="offset != null and rows != null">
+            LIMIT #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateFranchiserBase" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO">
+		UPDATE 
+			c_franchiser_base 
+		SET
+			phone = #{phone},
+			franchiser_name = #{franchiserName},
+			province_code = #{provinceCode},
+			province_name = #{provinceName},
+			city_code = #{cityCode},
+			city_name = #{cityName},
+			zone_code = #{zoneCode},
+			zone_name = #{zoneName},
+			password = #{password},
+			`status` = #{status},
+			modified_time = #{modifiedTime},
+			create_time = #{createTime}
+		WHERE 
+			franchiser_code = #{franchiserCode}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateFranchiserBaseSelective" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserBaseDO">
+        UPDATE
+        c_franchiser_base
+        <set>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName},
+            </if>
+            <if test="provinceCode != null">
+                province_code = #{provinceCode},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName},
+            </if>
+            <if test="cityCode != null">
+                city_code = #{cityCode},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName},
+            </if>
+            <if test="zoneCode != null">
+                zone_code = #{zoneCode},
+            </if>
+            <if test="zoneName != null">
+                zone_name = #{zoneName},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime}
+            </if>
+        </set>
+        WHERE
+        franchiser_code = #{franchiserCode}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteFranchiserBase" parameterType="java.lang.String">
+        delete FROM
+        c_franchiser_base
+        WHERE
+        franchiser_code = #{franchiserCode}
+    </update>
+
+</mapper>

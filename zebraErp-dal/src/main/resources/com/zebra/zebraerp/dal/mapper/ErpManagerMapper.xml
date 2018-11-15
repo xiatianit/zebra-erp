@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.ErpManagerMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.ErpManagerDO" id="ErpManagerResult">
+        <id property="id" column="id"/>
+        <result property="managerName" column="manager_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="managerRoleType" column="manager_role_type"/>
+        <result property="phone" column="phone"/>
+        <result property="password" column="password"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="franchiserCode" column="franchiser_code"/>
+        <result property="franchiserName" column="franchiser_name"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.id,
+		c.manager_name,
+		c.nick_name,
+		c.manager_role_type,
+		c.phone,
+		c.password,
+		c.register_time,
+		c.franchiser_code,
+		c.franchiser_name
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="id != null">
+           AND c.id = #{id}
+        </if>
+        <if test="managerName != null">
+            AND c.manager_name  LIKE concat('%', #{managerName} ,'%')
+        </if>
+        <if test="nickName != null">
+            AND c.nick_name = #{nickName}
+        </if>
+        <if test="managerRoleType != null">
+            AND c.manager_role_type = #{managerRoleType}
+        </if>
+        <if test="phone != null">
+            AND c.phone = #{phone}
+        </if>
+        <if test="password != null">
+            AND c.password = #{password}
+        </if>
+        <if test="registerTime != null">
+            AND c.register_time = #{registerTime}
+        </if>
+        <if test="franchiserCode != null">
+            AND c.franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            AND c.franchiser_name = #{franchiserName}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertErpManager" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO">
+		INSERT INTO c_erp_manager(
+			manager_name,
+			nick_name,
+			manager_role_type,
+			phone,
+			password,
+			register_time,
+			franchiser_code,
+			franchiser_name
+		) VALUES (
+			#{managerName},
+			#{nickName},
+			#{managerRoleType},
+			#{phone},
+			#{password},
+			#{registerTime},
+			#{franchiserCode},
+			#{franchiserName}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectErpManagerById" parameterType="java.lang.Long" resultMap="ErpManagerResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager c
+        WHERE
+        c.id = #{id}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectErpManagerList" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO"
+            resultMap="ErpManagerResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectErpManagerCount" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_erp_manager c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectErpManagerPage" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO"
+            resultMap="ErpManagerResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_erp_manager c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.id DESC
+        limit #{offset},#{rows}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateErpManager" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO">
+		UPDATE 
+			c_erp_manager 
+		SET
+			manager_name = #{managerName},
+			nick_name = #{nickName},
+			manager_role_type = #{managerRoleType},
+			phone = #{phone},
+			password = #{password},
+			register_time = #{registerTime},
+			franchiser_code = #{franchiserCode},
+			franchiser_name = #{franchiserName}
+		WHERE 
+			id = #{id}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateErpManagerSelective" parameterType="com.zebra.zebraerp.dal.dataobject.ErpManagerDO">
+        UPDATE
+        c_erp_manager
+        <set>
+            <if test="managerName != null">
+                manager_name = #{managerName},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="managerRoleType != null">
+                manager_role_type = #{managerRoleType},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName}
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteErpManager" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_erp_manager
+        WHERE
+        id = #{id}
+    </update>
+
+
+    <!-- 删除 -->
+    <update id="deleteByFranchiserCode" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_erp_manager
+        WHERE
+        franchiser_code = #{franchiserCode,jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

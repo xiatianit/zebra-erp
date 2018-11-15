@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.BikeModelMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.BikeModelDO" id="BikeModelResult">
+        <id property="id" column="id"/>
+        <result property="bikeModelCode" column="bike_model_code"/>
+        <result property="bikeModelName" column="bike_model_name"/>
+        <result property="franchiserCode" column="franchiser_code"/>
+        <result property="franchiserName" column="franchiser_name"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.id,
+		c.bike_model_code,
+		c.bike_model_name,
+		c.franchiser_code,
+		c.franchiser_name
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="id != null">
+           AND c.id = #{id}
+        </if>
+        <if test="bikeModelCode != null">
+            AND c.bike_model_code = #{bikeModelCode}
+        </if>
+        <if test="bikeModelName != null">
+            AND c.bike_model_name  LIKE concat('%', #{bikeModelName} ,'%')
+        </if>
+        <if test="franchiserCode != null">
+            AND c.franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            AND c.franchiser_name = #{franchiserName}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertBikeModel" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO">
+		INSERT INTO c_bike_model(
+			bike_model_code,
+			bike_model_name,
+			franchiser_code,
+			franchiser_name
+		) VALUES (
+			#{bikeModelCode},
+			#{bikeModelName},
+			#{franchiserCode},
+			#{franchiserName}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectBikeModelById" parameterType="java.lang.Long" resultMap="BikeModelResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_model c
+        WHERE
+        c.id = #{id}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectBikeModelList" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO"
+            resultMap="BikeModelResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_model c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectBikeModelCount" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_bike_model c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectBikeModelPage" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO"
+            resultMap="BikeModelResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_model c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.id DESC
+        LIMIT limit #{offset},#{rows}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateBikeModel" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO">
+		UPDATE 
+			c_bike_model 
+		SET
+			bike_model_code = #{bikeModelCode},
+			bike_model_name = #{bikeModelName},
+			franchiser_code = #{franchiserCode},
+			franchiser_name = #{franchiserName}
+		WHERE 
+			id = #{id}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateBikeModelSelective" parameterType="com.zebra.zebraerp.dal.dataobject.BikeModelDO">
+        UPDATE
+        c_bike_model
+        <set>
+            <if test="bikeModelCode != null">
+                bike_model_code = #{bikeModelCode},
+            </if>
+            <if test="bikeModelName != null">
+                bike_model_name = #{bikeModelName},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName}
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteBikeModel" parameterType="java.lang.Long">
+		delete FROM
+			c_bike_model
+		WHERE
+			id = #{id}
+	</update>
+
+</mapper>

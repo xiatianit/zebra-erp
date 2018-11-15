@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.ProvinceMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.ProvinceDO" id="ProvinceResult">
+        <id property="provinceCode" column="province_code"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="provinceAbbr" column="province_abbr"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.province_code,
+		c.province_name,
+		c.province_abbr
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="provinceCode != null">
+            AND  c.province_code = #{provinceCode}
+        </if>
+        <if test="provinceName != null">
+            AND c.province_name = #{provinceName}
+        </if>
+        <if test="provinceAbbr != null">
+            AND c.province_abbr = #{provinceAbbr}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertProvince" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO">
+		INSERT INTO c_province(
+			province_name,
+			province_abbr
+		) VALUES (
+			#{provinceName},
+			#{provinceAbbr}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectProvinceById" parameterType="java.lang.String" resultMap="ProvinceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_province c
+        WHERE
+        c.province_code = #{provinceCode}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectProvinceList" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO"
+            resultMap="ProvinceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_province c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectProvinceCount" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_province c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectProvincePage" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO"
+            resultMap="ProvinceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_province c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        ORDER BY c.province_code DESC
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateProvince" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO">
+		UPDATE 
+			c_province 
+		SET
+			province_name = #{provinceName},
+			province_abbr = #{provinceAbbr}
+		WHERE 
+			province_code = #{provinceCode}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateProvinceSelective" parameterType="com.zebra.zebraerp.dal.dataobject.ProvinceDO">
+        UPDATE
+        c_province
+        <set>
+            <if test="provinceName != null">
+                province_name = #{provinceName},
+            </if>
+            <if test="provinceAbbr != null">
+                province_abbr = #{provinceAbbr}
+            </if>
+        </set>
+        WHERE
+        province_code = #{provinceCode}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteProvince" parameterType="java.lang.String">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_province
+        WHERE
+        province_code = #{provinceCode}
+    </update>
+
+</mapper>

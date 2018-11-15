@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraerp.dal.mapper.FranchiserSettlementMapper">
+    <resultMap type="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO" id="FranchiserSettlementResult">
+        <id property="id" column="id"/>
+        <result property="settlementAmount" column="settlement_amount"/>
+        <result property="franchiserCode" column="franchiser_code"/>
+        <result property="franchiserName" column="franchiser_name"/>
+        <result property="status" column="status"/>
+        <result property="applyTime" column="apply_time"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.id,
+		c.settlement_amount,
+		c.franchiser_code,
+		c.franchiser_name,
+		c.`status`,
+		c.apply_time
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="id != null">
+            AND c.id = #{id}
+        </if>
+        <if test="settlementAmount != null">
+            AND c.settlement_amount = #{settlementAmount}
+        </if>
+        <if test="franchiserCode != null">
+            AND c.franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            AND c.franchiser_name = #{franchiserName}
+        </if>
+        <if test="status != null">
+            AND c.`status` = #{status}
+        </if>
+        <if test="applyTime != null">
+            AND c.apply_time = #{applyTime}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertFranchiserSettlement" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO"
+            keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO c_franchiser_settlement(
+			settlement_amount,
+			franchiser_code,
+			franchiser_name,
+			`status`,
+			apply_time
+		) VALUES (
+			#{settlementAmount},
+			#{franchiserCode},
+			#{franchiserName},
+			#{status},
+			#{applyTime}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectFranchiserSettlementById" parameterType="java.lang.Long" resultMap="FranchiserSettlementResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_settlement c
+        WHERE
+        c.id = #{id}
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectFranchiserSettlementList" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO"
+            resultMap="FranchiserSettlementResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_settlement c
+        WHERE 1=1
+        <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectFranchiserSettlementCount"
+            parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_franchiser_settlement c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectFranchiserSettlementPage" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO"
+            resultMap="FranchiserSettlementResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_franchiser_settlement c
+        WHERE 1=1
+            <include refid="searchCondition"/>
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateFranchiserSettlement" parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO">
+		UPDATE 
+			c_franchiser_settlement 
+		SET
+			settlement_amount = #{settlementAmount},
+			franchiser_code = #{franchiserCode},
+			franchiser_name = #{franchiserName},
+			`status` = #{status},
+			apply_time = #{applyTime}
+		WHERE 
+			id = #{id}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateFranchiserSettlementSelective"
+            parameterType="com.zebra.zebraerp.dal.dataobject.FranchiserSettlementDO">
+        UPDATE
+        c_franchiser_settlement
+        <set>
+            <if test="settlementAmount != null">
+                settlement_amount = #{settlementAmount},
+            </if>
+            <if test="franchiserCode != null">
+                franchiser_code = #{franchiserCode},
+            </if>
+            <if test="franchiserName != null">
+                franchiser_name = #{franchiserName},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime}
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteFranchiserSettlement" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_franchiser_settlement
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>
